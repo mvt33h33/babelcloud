@@ -11,8 +11,6 @@ class Server(object):
         {
             'extra': {
                 'flavorId': '2', 
-                'uri': 'https://servers.api.rackspacecloud.com/v1.0/644854/servers/20647550', 
-                'hostId': '810723d694a4bf6e3419a608a89eef3e', 
                 'password': None, 
                 'metadata': {}
             }, 
@@ -33,7 +31,11 @@ class Server(object):
 
     @property
     def state(self):
-        self._node = [ node for node in self._node.driver.list_nodes() if node.uuid == self._node.uuid ][0]
+        while True:
+            nodes = [ node for node in self._node.driver.list_nodes() if Server(node).uuid == self.uuid ]
+            if len(nodes):
+                self._node = nodes[0]
+                break
         return [ name.lower() for name in NodeState.__dict__ if NodeState.__dict__[name] == self._node.state ][0]
 
     @property
@@ -54,14 +56,18 @@ class Server(object):
 
     @property
     def uuid(self):
-        return self._node.uuid
+        return self._node.extra["hostId"]
+
+    @property
+    def uri(self):
+        return self._node.extra["uri"]
 
     @property
     def provider(self):
         return self._node.provider
 
     def destroy(self):
-        self._node.driver.destroy()
+        self._node.destroy()
 
     def wait(self):
         while self.state != "running":

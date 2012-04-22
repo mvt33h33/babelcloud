@@ -31,9 +31,9 @@ class AccountTest(unittest.TestCase):
                 image = self.account.images[0],
                 size = self.account.sizes[0]
                 )
+        self.server.wait()
 
     def tearDown(self):
-        self.server.wait()
         self.server.destroy()
 
     def test_servers_property(self):
