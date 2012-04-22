@@ -54,8 +54,16 @@ class Account(object):
         return self._connection.list_sizes()
 
     def create_server(self, name, image, size, **kargs):
-        return Server(self._connection.create_node(name = name, image = image, size = size, **kargs))
+        try:
+            return Server(self._connection.create_node(name = name, image = image, size = size, **kargs))
+        except Exception as error:
+            if error.message.startswith("413"):
+                raise APILimitError(error.message)
+            else raise error
 
 class LoginError(RuntimeError):
+    pass
+
+class APILimitError(RuntimeError):
     pass
 

@@ -7,7 +7,7 @@ import getpass
 
 from babelcloud.account import Account
 
-class AccountTest(unittest.TestCase):
+class AccountPropertiesTest(unittest.TestCase):
     """Testing suite for babelcloud.account."""
 
     @classmethod
@@ -20,10 +20,6 @@ class AccountTest(unittest.TestCase):
                     )
             if cls.account:
                 break
-
-    @classmethod
-    def tearDownClass(cls):
-        pass
 
     def setUp(self):
         self.server = self.account.create_server(
@@ -39,4 +35,9 @@ class AccountTest(unittest.TestCase):
     def test_servers_property(self):
         """Check that servers contains the server we create."""
         self.assertIn(server, self.account.servers)
+
+    def test_images_property(self):
+        image = self.server.snapshot()
+        self.assertIn(image, self.account.images)
+        image.destroy()
 

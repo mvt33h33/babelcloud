@@ -11,13 +11,13 @@ import os
 import unittest
 
 from test_login import LoginTest
-from test_account import AccountTest
+from test_account import AccountPropertiesTest
 from test_server import ServerExistenceTest
 from test_server import ServerManipulationTest
 
 SUITE_LIST = [
         unittest.TestLoader().loadTestsFromTestCase(LoginTest),
-        unittest.TestLoader().loadTestsFromTestCase(AccountTest),
+        unittest.TestLoader().loadTestsFromTestCase(AccountPropertiesTest),
         unittest.TestLoader().loadTestsFromTestCase(ServerExistenceTest),
         unittest.TestLoader().loadTestsFromTestCase(ServerManipulationTest),
         ]
