@@ -2,47 +2,61 @@
 
 import re
 
-from libcloud.compute.types import Provider, InvalidCredsError
+from libcloud.compute.types import Provider, InvalidCredsError, LibcloudError
 from libcloud.compute.providers import get_driver
 
+from babelcloud.server import Server
+from babelcloud.image import Image
+
 class Account(object):
-    @classmethod
-    def login(cls, username, password, provider = ""):
+    def __init__(self, connection):
+        self._connection = connection
+
+    @property
+    def servers(self):
+        self._servers = [
+                Server(node, self._connection) for node in self._connection.list_nodes()
+                ]
+
+    @staticmethod
+    def login(username, password, provider = ""):
         drivers = [ 
                 get_driver(Provider.__dict__[name]) for name in Provider.__dict__ \
                         if type(Provider.__dict__[name]) == int \
                         and re.search(provider, name, re.I) 
                 ]
 
-        print "drivers: ",drivers
-
         fail = False
+        error = None
 
         for driver in drivers:
             try:
                 fail = False
-                cls._connection = driver(username, password)
-
-                print "connection: ",cls._connection
-                
-                cls.servers = [ 
-                        Server(node) for node in cls._connection.list_nodes()
-                        ]
-
-                print "servers: ", cls.servers
-            except InvalidCredsError:
+                account = Account(driver(username, password))
+                account.servers
+            except (InvalidCredsError, LibcloudError) as error:
                 fail = True
                 continue
-
-        print "fail: ",fail
+            break
 
         if fail:
-            raise LoginError([ 
+            raise LoginError(error, [ 
                 name for name in Provider.__dict__ \
                         if Provider.__dict__[name] in drivers
                 ])
 
-        return cls
+        return account
+
+    @property
+    def images(self):
+        return [ Image(image) for image in self._connection.list_images() ]
+
+    @property
+    def sizes(self):
+        return self._connection.list_sizes()
+
+    def create_server(self, name, image, size, **kargs):
+        return Server(self._connection.create_node(name = name, image = image, size = size, **kargs))
 
 class LoginError(RuntimeError):
     pass

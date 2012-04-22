@@ -3,6 +3,9 @@
 """Primary testing suite for babelcloud.account. """
 
 import unittest
+import getpass
+
+from babelcloud.account import Account
 
 class AccountTest(unittest.TestCase):
     """Testing suite for babelcloud.account."""
@@ -11,7 +14,7 @@ class AccountTest(unittest.TestCase):
     def setUpClass(cls):
         while True:
             cls.account = Account.login(
-                    username = raw_input("username: "),
+                    username = raw_input("\nusername: "),
                     password = getpass.getpass("password: "),
                     provider = raw_input("provider: ")
                     )

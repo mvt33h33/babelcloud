@@ -3,6 +3,7 @@
 """Primary testing suite for babelcloud.server."""
 
 import unittest
+import getpass
 
 from babelcloud.account import Account
 
@@ -13,7 +14,7 @@ class ServerExistenceTest(unittest.TestCase):
     def setUpClass(cls):
         while True:
             cls.account = Account.login(
-                    username = raw_input("username: "),
+                    username = raw_input("\nusername: "),
                     password = getpass.getpass("password: "),
                     provider = raw_input("provider: ")
                     )
@@ -30,11 +31,28 @@ class ServerExistenceTest(unittest.TestCase):
 class ServerManipulationTest(unittest.TestCase):
     """Testing suite for babelcloud.server and server manipulation."""
 
+    @classmethod
+    def setUpClass(cls):
+        while True:
+            cls.account = Account.login(
+                    username = raw_input("\nusername: "),
+                    password = getpass.getpass("password: "),
+                    provider = raw_input("provider: ")
+                    )
+            if cls.account:
+                break
+
+        print cls.account
+
     def setUp(self):
-        server = self.account.create_server()
+        self.server = self.account.create_server(
+                name = "babelcloud",
+                image = self.account.images[0],
+                size = self.account.sizes[0]
+                )
 
     def tearDown(self):
-        server.destroy()
+        self.server.destroy()
 
     def test_snapshot_server(self):
         pass

@@ -26,6 +26,7 @@ setup_params['packages'] = [
 setup_params['data_files'] = [
         ("share/doc/%s-%s" % (setup_params['name'], setup_params['version']), [
             "README",
+            "examples/login.py"
             ]),
         ]
 setup_params['requires'] = [

@@ -18,7 +18,7 @@ class LoginTest(unittest.TestCase):
 
     def test_successful_account_login(self):
         self.assertIsNotNone(Account.login(
-            username = raw_input("username: "),
+            username = raw_input("\nusername: "),
             password = getpass.getpass("password: "),
             provider = raw_input("provider: ")
             ))
