@@ -24,9 +24,9 @@ class LoginTest(unittest.TestCase):
             ))
 
     def test_unsuccessful_account_login(self):
-        self.assertRaises(LoginError, Account.login(
-            username = "incorrect_user_name_never_used_anywhere_i_hope",
-            password = "incorrect_user_name_never_used_anywhere_i_hope",
-            provider = "rackspace",
-            ))
+        self.assertRaises(LoginError, Account.login,
+                username = "incorrect_user_name_never_used_anywhere_i_hope",
+                password = "incorrect_user_name_never_used_anywhere_i_hope",
+                provider = "rackspace",
+                )
 

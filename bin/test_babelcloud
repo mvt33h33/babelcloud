@@ -20,7 +20,7 @@ except ImportError:
 def main():
     """Set us up the test ..."""
     suite = unittest.TestSuite(test_babelcloud.SUITE)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    unittest.TextTestRunner(verbosity = 2, failfast = True).run(suite)
 
 if __name__ == "__main__":
     main()

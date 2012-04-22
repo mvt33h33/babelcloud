@@ -42,30 +42,39 @@ class ServerManipulationTest(unittest.TestCase):
             if cls.account:
                 break
 
-        print cls.account
-
     def setUp(self):
         self.server = self.account.create_server(
-                name = "babelcloud",
+                name = "test_babelcloud",
                 image = self.account.images[0],
                 size = self.account.sizes[0]
                 )
 
     def tearDown(self):
+        self.server.wait()
         self.server.destroy()
 
     def test_snapshot_server(self):
-        pass
+        self.server.wait()
+        image = self.server.snapshot()
+        self.assertIn(image, self.account.images)
 
     def test_suspend_server(self):
-        pass
+        self.server.wait()
+        self.server.suspend()
+        self.assertEqual("suspended", self.server.status)
 
     def test_wait_for_server(self):
+        self.assertNotEqual("running", self.server.status)
+        self.server.wait()
+        self.assertEqual("running", self.server.status)
         pass
 
     def test_reboot_server(self):
-        pass
+        self.server.wait()
+        self.server.reboot()
 
     def test_reset_root_password(self):
-        pass
+        self.server.wait()
+        self.server.reset_root_password("just_testing")
+        # TODO Login to the server and check the password ...
 

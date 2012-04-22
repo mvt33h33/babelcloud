@@ -6,7 +6,7 @@ from libcloud.compute.types import Provider, InvalidCredsError, LibcloudError
 from libcloud.compute.providers import get_driver
 
 from babelcloud.server import Server
-from babelcloud.image import Image
+from babelcloud.server.image import Image
 
 class Account(object):
     def __init__(self, connection):
@@ -14,9 +14,7 @@ class Account(object):
 
     @property
     def servers(self):
-        self._servers = [
-                Server(node, self._connection) for node in self._connection.list_nodes()
-                ]
+        return [ Server(node) for node in self._connection.list_nodes() ]
 
     @staticmethod
     def login(username, password, provider = ""):

@@ -26,9 +26,14 @@ class AccountTest(unittest.TestCase):
         pass
 
     def setUp(self):
-        self.server = self.account.create_server()
+        self.server = self.account.create_server(
+                name = "test_babelcloud",
+                image = self.account.images[0],
+                size = self.account.sizes[0]
+                )
 
     def tearDown(self):
+        self.server.wait()
         self.server.destroy()
 
     def test_servers_property(self):
