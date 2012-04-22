@@ -7,14 +7,26 @@ from libcloud.compute.providers import get_driver
 
 from babelcloud.server import Server
 from babelcloud.server.image import Image
+from babelcloud.decorators import servererrorhandler
 
 class Account(object):
     def __init__(self, connection):
         self._connection = connection
 
     @property
+    @servererrorhandler
     def servers(self):
         return [ Server(node) for node in self._connection.list_nodes() ]
+
+    @property
+    @servererrorhandler
+    def images(self):
+        return [ Image(image) for image in self._connection.list_images() ]
+
+    @property
+    @servererrorhandler
+    def sizes(self):
+        return self._connection.list_sizes()
 
     @staticmethod
     def login(username, password, provider = ""):
@@ -45,25 +57,10 @@ class Account(object):
 
         return account
 
-    @property
-    def images(self):
-        return [ Image(image) for image in self._connection.list_images() ]
-
-    @property
-    def sizes(self):
-        return self._connection.list_sizes()
-
+    @servererrorhandler
     def create_server(self, name, image, size, **kargs):
-        try:
-            return Server(self._connection.create_node(name = name, image = image, size = size, **kargs))
-        except Exception as error:
-            if error.message.startswith("413"):
-                raise APILimitError(error.message)
-            else raise error
+        return Server(self._connection.create_node(name = name, image = image, size = size, **kargs))
 
 class LoginError(RuntimeError):
-    pass
-
-class APILimitError(RuntimeError):
     pass
 
