@@ -17,6 +17,7 @@ def servererrorhandler(func):
             elif error.message.startswith("500"):
                 raise ServerError(error.message)
             else:
+                print("Type: {0}".format(type(error)))
                 raise error
 
     return new_func

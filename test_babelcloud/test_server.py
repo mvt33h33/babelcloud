@@ -78,3 +78,12 @@ class ServerManipulationTest(unittest.TestCase):
         self.server.reset_root_password("just_testing")
         # TODO Login to the server and check the password ...
 
+def suite():
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.makeSuite(ServerExistenceTest))
+    suite.addTest(unittest.makeSuite(ServerManipulationTest))
+    return suite
+
+if __name__ == "__main__":
+    unittest.main()
+

@@ -29,4 +29,11 @@ class LoginTest(unittest.TestCase):
                 password = "incorrect_user_name_never_used_anywhere_i_hope",
                 provider = "rackspace",
                 )
+def suite():
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.makeSuite(LoginTest))
+    return suite
+
+if __name__ == "__main__":
+    unittest.main()
 

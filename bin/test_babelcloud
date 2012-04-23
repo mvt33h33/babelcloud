@@ -11,15 +11,11 @@ import sys
 import os
 import unittest
 
-try:
-    import test_babelcloud
-except ImportError:
-    sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
-    import test_babelcloud
+import test_babelcloud
 
 def main():
     """Set us up the test ..."""
-    suite = unittest.TestSuite(test_babelcloud.SUITE)
+    suite = unittest.TestSuite(test_babelcloud.suite())
     unittest.TextTestRunner(verbosity = 2, failfast = True).run(suite)
 
 if __name__ == "__main__":

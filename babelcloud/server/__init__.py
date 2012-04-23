@@ -73,3 +73,6 @@ class Server(object):
         while self.state != "running":
             time.sleep(1)
 
+    def snapshot(self):
+        pass
+

@@ -41,3 +41,11 @@ class AccountPropertiesTest(unittest.TestCase):
         self.assertIn(image, self.account.images)
         image.destroy()
 
+def suite():
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.makeSuite(AccountPropertiesTest))
+    return suite
+
+if __name__ == "__main__":
+    unittest.main()
+

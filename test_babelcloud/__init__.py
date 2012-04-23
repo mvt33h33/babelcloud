@@ -2,24 +2,21 @@
 
 """Primary testing suite for babelcloud"""
 
-__all__ = [
-        "SUITE",
-        ]
-
 import sys
 import os
 import unittest
 
-from test_login import LoginTest
-from test_account import AccountPropertiesTest
-from test_server import ServerExistenceTest
-from test_server import ServerManipulationTest
+import test_login
+import test_account
+import test_server
 
-SUITE_LIST = [
-        unittest.TestLoader().loadTestsFromTestCase(LoginTest),
-        unittest.TestLoader().loadTestsFromTestCase(AccountPropertiesTest),
-        unittest.TestLoader().loadTestsFromTestCase(ServerExistenceTest),
-        unittest.TestLoader().loadTestsFromTestCase(ServerManipulationTest),
-        ]
-SUITE = unittest.TestSuite(SUITE_LIST)
+def suite():
+    suite = unittest.TestSuite()
+    suite.addTest(test_login.suite())
+    suite.addTest(test_account.suite())
+    suite.addTest(test_server.suite())
+    return suite
+
+if __name__ == "__main__":
+    unittest.main()
 
