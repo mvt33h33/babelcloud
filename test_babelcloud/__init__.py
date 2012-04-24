@@ -5,10 +5,19 @@
 import sys
 import os
 import unittest
+import getpass
+
+from babelcloud.account import Account
 
 import test_login
 import test_account
 import test_server
+
+ACCOUNT = Account.login(
+        username = raw_input("username: "),
+        password = getpass.getpass("password: "),
+        provider = raw_input("provider: ")
+        )
 
 def suite():
     suite = unittest.TestSuite()

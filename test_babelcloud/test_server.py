@@ -5,46 +5,30 @@
 import unittest
 import getpass
 
+from test_babelcloud import ACCOUNT
+
 from babelcloud.account import Account
 
 class ServerExistenceTest(unittest.TestCase):
     """Testing suite for babelcloud.server and server existence."""
 
-    @classmethod
-    def setUpClass(cls):
-        while True:
-            cls.account = Account.login(
-                    username = raw_input("\nusername: "),
-                    password = getpass.getpass("password: "),
-                    provider = raw_input("provider: ")
-                    )
-            if cls.account:
-                break
-
     def test_create_and_destroy_server(self):
-        """Check if we can properly create servers."""
-        server = self.account.create_server()
-        self.assertTrue(server in self.account.servers, "Server not created!")
+        server = ACCOUNT.create_server(
+                name = "test_babelcloud.test_server",
+                image = self.account.images[0],
+                size = self.account.sizes[0]
+                )
+        server.wait()
+        self.assertTrue(server in ACCOUNT.servers, "Server not created!")
         server.destroy()
-        self.assertTrue(server not in self.account.servers, "Server not destroyed!")
+        self.assertTrue(server not in ACCOUNT.servers, "Server not destroyed!")
 
 class ServerManipulationTest(unittest.TestCase):
     """Testing suite for babelcloud.server and server manipulation."""
 
-    @classmethod
-    def setUpClass(cls):
-        while True:
-            cls.account = Account.login(
-                    username = raw_input("\nusername: "),
-                    password = getpass.getpass("password: "),
-                    provider = raw_input("provider: ")
-                    )
-            if cls.account:
-                break
-
     def setUp(self):
-        self.server = self.account.create_server(
-                name = "test_babelcloud",
+        self.server = ACCOUNT.create_server(
+                name = "test_babelcloud.test_server",
                 image = self.account.images[0],
                 size = self.account.sizes[0]
                 )
@@ -56,7 +40,7 @@ class ServerManipulationTest(unittest.TestCase):
     def test_snapshot_server(self):
         self.server.wait()
         image = self.server.snapshot()
-        self.assertIn(image, self.account.images)
+        self.assertIn(image, ACCOUNT.images)
 
     def test_suspend_server(self):
         self.server.wait()

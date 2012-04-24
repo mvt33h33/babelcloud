@@ -25,6 +25,12 @@ class Server(object):
 
         self._node = node
 
+    def __eq__(self, other):
+        return self.uuid == other.uuid
+
+    def __ne__(self, other):
+        return not self == other
+
     @property
     def name(self):
         return self._node.name
@@ -32,7 +38,7 @@ class Server(object):
     @property
     def state(self):
         while True:
-            nodes = [ node for node in self._node.driver.list_nodes() if Server(node).uuid == self.uuid ]
+            nodes = [ node for node in self._node.driver.list_nodes() if Server(node) == self ]
             if len(nodes):
                 self._node = nodes[0]
                 break
@@ -74,5 +80,8 @@ class Server(object):
             time.sleep(1)
 
     def snapshot(self):
-        pass
+        raise NotImplementedError()
+
+    def reboot(self):
+        self._node.reboot()
 

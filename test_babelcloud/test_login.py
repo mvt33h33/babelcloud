@@ -5,23 +5,14 @@
 import unittest
 import getpass
 
+from test_babelcloud import ACCOUNT
 from babelcloud.account import Account, LoginError
 
 class LoginTest(unittest.TestCase):
     """Testing suite for babelcloud.account.login."""
 
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
     def test_successful_account_login(self):
-        self.assertIsNotNone(Account.login(
-            username = raw_input("\nusername: "),
-            password = getpass.getpass("password: "),
-            provider = raw_input("provider: ")
-            ))
+        self.assertIsNotNone(ACCOUNT)
 
     def test_unsuccessful_account_login(self):
         self.assertRaises(LoginError, Account.login,
@@ -29,6 +20,7 @@ class LoginTest(unittest.TestCase):
                 password = "incorrect_user_name_never_used_anywhere_i_hope",
                 provider = "rackspace",
                 )
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(LoginTest))
