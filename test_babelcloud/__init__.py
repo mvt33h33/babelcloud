@@ -9,15 +9,15 @@ import getpass
 
 from babelcloud.account import Account
 
-import test_login
-import test_account
-import test_server
-
 ACCOUNT = Account.login(
         username = raw_input("username: "),
         password = getpass.getpass("password: "),
         provider = raw_input("provider: ")
         )
+
+import test_login
+import test_account
+import test_server
 
 def suite():
     suite = unittest.TestSuite()

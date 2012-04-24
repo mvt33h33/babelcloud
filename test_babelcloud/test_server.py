@@ -15,8 +15,8 @@ class ServerExistenceTest(unittest.TestCase):
     def test_create_and_destroy_server(self):
         server = ACCOUNT.create_server(
                 name = "test_babelcloud.test_server",
-                image = self.account.images[0],
-                size = self.account.sizes[0]
+                image = ACCOUNT.images[0],
+                size = ACCOUNT.sizes[0]
                 )
         server.wait()
         self.assertTrue(server in ACCOUNT.servers, "Server not created!")
@@ -29,8 +29,8 @@ class ServerManipulationTest(unittest.TestCase):
     def setUp(self):
         self.server = ACCOUNT.create_server(
                 name = "test_babelcloud.test_server",
-                image = self.account.images[0],
-                size = self.account.sizes[0]
+                image = ACCOUNT.images[0],
+                size = ACCOUNT.sizes[0]
                 )
 
     def tearDown(self):

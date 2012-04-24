@@ -15,8 +15,8 @@ class AccountPropertiesTest(unittest.TestCase):
     def setUp(self):
         self.server = ACCOUNT.create_server(
                 name = "test_babelcloud.test_account",
-                image = self.account.images[0],
-                size = self.account.sizes[0]
+                image = ACCOUNT.images[0],
+                size = ACCOUNT.sizes[0]
                 )
         self.server.wait()
 
