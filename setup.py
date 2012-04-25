@@ -22,6 +22,7 @@ setup_params['url'] = "https://github.com/alunduil/babelcloud"
 setup_params['license'] = ""
 setup_params['packages'] = [
         "babelcloud",
+        "babelcloud.server",
         ]
 setup_params['data_files'] = [
         ("share/doc/%s-%s" % (setup_params['name'], setup_params['version']), [
